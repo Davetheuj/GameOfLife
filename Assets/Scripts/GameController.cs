@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     private int maxGeneration = int.MaxValue;
     private float timer;
     private const float timeBetweenGenerations = 2;
-    private TMP_Text maxGenerationInputField;
+    private TMP_InputField maxGenerationInputField;
     private TMP_Text currentGenerationText;
 
     private GameObject cellContainer;
@@ -24,11 +24,14 @@ public class GameController : MonoBehaviour
     {
         cellContainer = GameObject.Find("GamePanel");
         currentGenerationText = GameObject.Find("GenerationText").GetComponent<TMP_Text>();
+        maxGenerationInputField = GameObject.Find("GenerationInputField").GetComponent<TMP_InputField>();
         InitializeCells();
     }
 
     private void Update()
     {
+       
+
         if(simulationState == SimulationState.Started)
         {
             timer += Time.deltaTime;
@@ -64,7 +67,12 @@ public class GameController : MonoBehaviour
 
    public void OnStartButtonPressed()
     {
-        
+        int.TryParse(maxGenerationInputField.text, out maxGeneration);
+        if(maxGeneration <= 0)
+        {
+            maxGeneration = int.MaxValue;
+        }
+
         for (int y = 0; y < ROW_COUNT; y++)
         {
             for (int x = 0; x < COLUMN_COUNT; x++)
@@ -80,7 +88,6 @@ public class GameController : MonoBehaviour
 
     void UpdateCells()
     {
-        Debug.Log("Updating Cells");
         for (int y = 0; y < ROW_COUNT; y++)
         {
             for (int x = 0; x < COLUMN_COUNT; x++)
@@ -98,12 +105,23 @@ public class GameController : MonoBehaviour
         }
 
         currentGeneration++;
-        currentGenerationText.text = currentGeneration.ToString();
+        currentGenerationText.text = $"Generation: {currentGeneration} of {maxGeneration}";
+        if (currentGeneration == maxGeneration)
+        {
+            simulationState = SimulationState.Stopped;
+        }
     }
 
     public void OnPauseButtonPressed()
     {
+        simulationState = SimulationState.Paused;
+    }
 
+    public void OnResetButtonPressed()
+    {
+        simulationState = SimulationState.Stopped;
+        currentGeneration = 0;
+        currentGenerationText.text = $"Generation: {currentGeneration} of {maxGeneration}";
     }
 
    

@@ -78,14 +78,35 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         livingNeighbors += CheckLLCell();
         livingNeighbors += CheckLRCell();
 
-        if (livingNeighbors >= 1)
+
+        //1.A living cell with two or three living neighbors survives to the next generation;
+        //2.A living cell with fewer than two living neighbors dies from underpopulation;
+        //3.A living cell with more than three living neighbors dies from overpopulation;
+        //4.A dead cell with exactly three living neighbors becomes a living cell by reproduction.
+
+        if (currentCellState == CellState.Alive)
         {
-            destinationCellState = CellState.Alive;
+            if (livingNeighbors == 2 || livingNeighbors == 3)
+            {
+                destinationCellState = CellState.Alive;
+            }
+            else
+            { 
+                destinationCellState = CellState.Dead;
+            }
         }
         else
         {
-            destinationCellState = CellState.Dead;
+            if(livingNeighbors == 3)
+            {
+                destinationCellState = CellState.Alive;
+            }
+            else
+            {
+                destinationCellState = CellState.Dead;
+            }
         }
+
 
     }
 

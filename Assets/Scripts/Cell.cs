@@ -11,9 +11,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     public int livingNeighbors;
     public int cellPosX;
     public int cellPosY;
-
     
-
     void Start()
     {
         currentCellState = CellState.Dead;
@@ -22,7 +20,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Cell Clicked!");
 
         if(GameController.simulationState == SimulationState.Started)
         {
@@ -30,7 +27,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         }
 
         SwitchCellState();
-
     }
 
     public void SwitchCellState()
@@ -59,7 +55,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         }
     }
 
-
     public void SetCellStateFromDestination()
     {
         currentCellState = destinationCellState;
@@ -77,7 +72,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
         livingNeighbors += CheckURCell();
         livingNeighbors += CheckLLCell();
         livingNeighbors += CheckLRCell();
-
 
         //1.A living cell with two or three living neighbors survives to the next generation;
         //2.A living cell with fewer than two living neighbors dies from underpopulation;
@@ -101,13 +95,12 @@ public class Cell : MonoBehaviour, IPointerClickHandler
             {
                 destinationCellState = CellState.Alive;
             }
+           
             else
             {
                 destinationCellState = CellState.Dead;
             }
         }
-
-
     }
 
     private int CheckLeftCell()
@@ -223,8 +216,4 @@ public class Cell : MonoBehaviour, IPointerClickHandler
 
         return 0;
     }
-
-
-
-
 }

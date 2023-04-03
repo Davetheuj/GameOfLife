@@ -1,5 +1,4 @@
 using Assets.Scripts;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -9,15 +8,15 @@ public class GameController : MonoBehaviour
     private int currentGeneration = 0;
     private int maxGeneration = int.MaxValue;
     private float timer;
-    private const float timeBetweenGenerations = 2;
+    private const float timeBetweenGenerations = .25f;
     private TMP_InputField maxGenerationInputField;
     private TMP_Text currentGenerationText;
 
     private GameObject cellContainer;
     public static Cell[,] cells;
 
-    public const int ROW_COUNT = 7;
-    public const int COLUMN_COUNT = 16;
+    public const int ROW_COUNT = 50;
+    public const int COLUMN_COUNT = 120;
 
 
     private void Start()
@@ -122,6 +121,21 @@ public class GameController : MonoBehaviour
         simulationState = SimulationState.Stopped;
         currentGeneration = 0;
         currentGenerationText.text = $"Generation: {currentGeneration} of {maxGeneration}";
+    }
+
+    public void RandomSeed()
+    {
+        for (int y = 0; y < ROW_COUNT; y++)
+        {
+            for (int x = 0; x < COLUMN_COUNT; x++)
+            {
+                if (Random.Range(0f, 1f) > .4f) 
+                {
+                    cells[x, y].SwitchCellState();
+                }
+            }
+        }
+
     }
 
    
